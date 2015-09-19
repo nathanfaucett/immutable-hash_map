@@ -32,7 +32,7 @@ BitmapIndexedNodePrototype = BitmapIndexedNode.prototype;
 
 BitmapIndexedNode.EMPTY = EMPTY;
 
-BitmapIndexedNodePrototype.find = function(shift, keyHash, key, notSetValue) {
+BitmapIndexedNodePrototype.get = function(shift, keyHash, key, notSetValue) {
     var bitmap = this.bitmap,
         bit = bitpos(keyHash, shift),
         array, index, keyOrNull, valueOrNode;
@@ -47,7 +47,7 @@ BitmapIndexedNodePrototype.find = function(shift, keyHash, key, notSetValue) {
         valueOrNode = array[2 * index + 1];
 
         if (isNull(keyOrNull)) {
-            return valueOrNode.find(shift + SHIFT, keyHash, key, notSetValue);
+            return valueOrNode.get(shift + SHIFT, keyHash, key, notSetValue);
         } else {
             if (isEqual(key, keyOrNull)) {
                 return valueOrNode;

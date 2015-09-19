@@ -106,7 +106,9 @@ function Map_fromArray(_this, array) {
         newRoot = root.set(0, hashCode(key), key, value, addedLeaf);
         if (newRoot !== root) {
             root = newRoot;
-            size += 1;
+            if (!isNull(addedLeaf.value)) {
+                size += 1;
+            }
         }
 
         i += 2;
@@ -160,18 +162,18 @@ MapPrototype.count = MapPrototype.size;
 
 MapPrototype.has = function(key) {
     var root = this.__root;
-    return !isNull(root) ? root.find(0, hashCode(key), key, NOT_SET) !== NOT_SET : false;
+    return isNull(root) ? false : root.get(0, hashCode(key), key, NOT_SET) !== NOT_SET;
 };
 
 MapPrototype.get = function(key) {
     var root = this.__root;
-    return !isNull(root) ? root.find(0, hashCode(key), key) : undefined;
+    return isNull(root) ? undefined : root.get(0, hashCode(key), key);
 };
 
 MapPrototype.set = function(key, value) {
-    var addedLeaf = new Box(null),
-        root = this.__root,
+    var root = this.__root,
         size = this.__size,
+        addedLeaf = new Box(null),
         newRoot = (isNull(root) ? BitmapIndexedNode.EMPTY : root).set(0, hashCode(key), key, value, addedLeaf),
         map;
 
@@ -187,10 +189,13 @@ MapPrototype.set = function(key, value) {
 
 MapPrototype.remove = function(key) {
     var root = this.__root,
+        size = this.__size,
         newRoot;
 
     if (isNull(root)) {
         return this;
+    } else if (size === 1) {
+        return EMPTY_MAP;
     } else {
         newRoot = root.remove(0, hashCode(key), key);
 
@@ -198,7 +203,7 @@ MapPrototype.remove = function(key) {
             return this;
         } else {
             map = new Map(INTERNAL_CREATE);
-            map.__size = this.__size - 1;
+            map.__size = size - 1;
             map.__root = newRoot;
             return map;
         }

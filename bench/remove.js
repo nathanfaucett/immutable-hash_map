@@ -27,7 +27,7 @@ suite.add("mori map", function() {
     var a = mori.hashMap(0, 0, 1, 1);
 
     return function() {
-        mori.remove(a, 0, 1);
+        mori.assoc(a, 0, 1);
     };
 }());
 
@@ -40,5 +40,5 @@ suite.on("complete", function() {
     console.log("=========================================\n");
 });
 
-console.log("\n= set ===================================");
+console.log("\n= remove ================================");
 suite.run();

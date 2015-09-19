@@ -3,7 +3,13 @@ var tape = require("tape"),
 
 
 tape("Map() should create new Map from passed arguments", function(assert) {
-    assert.deepEqual(new Map("key0", "value0", "key1", "value2").toArray(), ["key0", "value0", "key1", "value2"]);
+    assert.deepEqual(new Map("key0", "value0", "key1", "value1").toArray(), ["key0", "value0", "key1", "value1"]);
+    assert.deepEqual(new Map({
+        key0: "value0",
+        key1: "value1"
+    }).toArray(), ["key0", "value0", "key1", "value1"]);
+    assert.deepEqual(new Map("key0", "value0", "key1", "value1").toArray(), ["key0", "value0", "key1", "value1"]);
+    assert.deepEqual(new Map("key0", "value0", "key1", "value1").toArray(), ["key0", "value0", "key1", "value1"]);
     assert.end();
 });
 
@@ -30,6 +36,16 @@ tape("Map get(key : Any) should return element where key equals passed key", fun
     assert.equal(map.get(1), 2);
     assert.equal(map.get(3), 4);
     assert.equal(map.get(5), undefined);
+
+    assert.end();
+});
+
+tape("Map has(key : Any) should return if Map has an element where key equals passed key", function(assert) {
+    var map = new Map(0, 0, 1, 1);
+
+    assert.equal(map.has(0), true);
+    assert.equal(map.has(1), true);
+    assert.equal(map.has(2), false);
 
     assert.end();
 });

@@ -27,14 +27,14 @@ ArrayNodePrototype = ArrayNode.prototype;
 
 ArrayNode.EMPTY = EMPTY;
 
-ArrayNodePrototype.find = function(shift, keyHash, key, notSetValue) {
+ArrayNodePrototype.get = function(shift, keyHash, key, notSetValue) {
     var index = mask(keyHash, shift),
         node = this.array[index];
 
     if (isNullOrUndefined(node)) {
         return notSetValue;
     } else {
-        return node.find(shift + SHIFT, hash, key, notSetValue);
+        return node.get(shift + SHIFT, hash, key, notSetValue);
     }
 };
 

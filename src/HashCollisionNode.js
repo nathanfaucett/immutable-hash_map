@@ -26,9 +26,9 @@ HashCollisionNodePrototype = HashCollisionNode.prototype;
 
 HashCollisionNode.EMPTY = EMPTY;
 
-HashCollisionNodePrototype.find = function(shift, keyHash, key, notSetValue) {
+HashCollisionNodePrototype.get = function(shift, keyHash, key, notSetValue) {
     var array = this.array,
-        index = findIndex(array, key);
+        index = getIndex(array, key);
 
     if (index === -1) {
         return notFound;
@@ -47,7 +47,7 @@ HashCollisionNodePrototype.set = function(shift, keyHash, key, value, addedLeaf)
     if (keyHash === this.keyHash) {
         array = this.array;
         count = this.count,
-            index = findIndex(array, key);
+            index = getIndex(array, key);
 
         if (index !== -1) {
             if (array[index + 1] === value) {
@@ -70,7 +70,7 @@ HashCollisionNodePrototype.set = function(shift, keyHash, key, value, addedLeaf)
 
 HashCollisionNodePrototype.remove = function(shift, keyHash, key) {
     var array = this.array,
-        index = findIndex(array, key);
+        index = getIndex(array, key);
 
     if (index === -1) {
         return this;
@@ -85,7 +85,7 @@ HashCollisionNodePrototype.remove = function(shift, keyHash, key) {
 
 HashCollisionNodePrototype.iterator = nodeIterator;
 
-function findIndex(array, key) {
+function getIndex(array, key) {
     var i = -1,
         il = array.length - 1;
 

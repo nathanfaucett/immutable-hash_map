@@ -35,6 +35,7 @@
   "dependencies": {
     "define_property": "git://github.com/nathanfaucett/define_property.git",
     "fast_slice": "git://github.com/nathanfaucett/fast_slice.git",
+    "fast_bind_this": "git://github.com/nathanfaucett/fast_bind_this.git",
     "has": "git://github.com/nathanfaucett/has.git",
     "hash_code": "git://github.com/nathanfaucett/hash_code.git",
     "is_array_like": "git://github.com/nathanfaucett/is_array_like.git",

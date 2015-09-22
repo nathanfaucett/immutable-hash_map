@@ -428,8 +428,31 @@ MapPrototype.toArray = function() {
     return results;
 };
 
+MapPrototype.join = function(separator, keyValueSeparator) {
+    var it = this.iterator(),
+        next = it.next(),
+        result = "";
+
+    separator = separator || ", ";
+    keyValueSeparator = keyValueSeparator || ": ";
+
+    while (true) {
+        nextValue = next.value;
+        next = it.next();
+
+        if (next.done) {
+            result += nextValue[0] + keyValueSeparator + nextValue[1];
+            break;
+        } else {
+            result += nextValue[0] + keyValueSeparator + nextValue[1] + separator;
+        }
+    }
+
+    return result;
+};
+
 MapPrototype.toString = function() {
-    return "{" + this.toArray().join(" ") + "}";
+    return "{" + this.join() + "}";
 };
 
 MapPrototype.inspect = MapPrototype.toString;

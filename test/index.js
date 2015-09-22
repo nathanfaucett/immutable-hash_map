@@ -223,7 +223,17 @@ tape("Map some(callback[, thisArg])", function(assert) {
     assert.end();
 });
 
+tape("Map join([separator = \", \", [keyValueSeparator = \": \"]]) should join all elements of an Map into a String", function(assert) {
+    var map = new Map(0, 0, 1, 1);
+
+    assert.equal(map.join(), "0: 0, 1: 1");
+    assert.equal(map.join(" "), "0: 0 1: 1");
+    assert.equal(map.join(", ", " => "), "0 => 0, 1 => 1");
+
+    assert.end();
+});
+
 tape("Map toString() should return toString representation of Map", function(assert) {
-    assert.equal((new Map(0, 0, 1, 1)).toString(), "{0 0 1 1}");
+    assert.equal((new Map(0, 0, 1, 1)).toString(), "{0: 0, 1: 1}");
     assert.end();
 });

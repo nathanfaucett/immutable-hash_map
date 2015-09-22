@@ -15,9 +15,8 @@ var has = require("has"),
 
 var INTERNAL_CREATE = {},
 
-    HAS_SYMBOL = typeof(Symbol) === "function",
-    ITERATOR_SYMBOL = HAS_SYMBOL ? Symbol.iterator : false,
-    IS_MAP = HAS_SYMBOL ? Symbol("Map") : "__ImmutableMap__",
+    ITERATOR_SYMBOL = typeof(Symbol) === "function" ? Symbol.iterator : false,
+    IS_MAP = "__ImmutableMap__",
 
     NOT_SET = {},
     EMPTY_MAP = new Map(INTERNAL_CREATE),
@@ -136,18 +135,12 @@ Map.isMap = function(value) {
     return value && value[IS_MAP] === true;
 };
 
-if (HAS_SYMBOL) {
-    MapPrototype[IS_MAP] = true;
-} else if (Object.defineProperty) {
-    defineProperty(MapPrototype, IS_MAP, {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-        value: true
-    });
-} else {
-    MapPrototype[IS_MAP] = true;
-}
+defineProperty(MapPrototype, IS_MAP, {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: true
+});
 
 MapPrototype.size = function() {
     return this.__size;

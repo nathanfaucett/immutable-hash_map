@@ -131,6 +131,14 @@ Map.of = function(value) {
     }
 };
 
+Map.fromArguments = function(args) {
+    if (args.length > 0) {
+        return Map_createMap(new Map(INTERNAL_CREATE), args[0], args);
+    } else {
+        return EMPTY_MAP;
+    }
+};
+
 Map.isMap = function(value) {
     return value && value[IS_MAP] === true;
 };

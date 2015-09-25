@@ -162,6 +162,10 @@ if (defineProperty.hasGettersSetters) {
 
 MapPrototype.count = MapPrototype.size;
 
+MapPrototype.isEmpty = function() {
+    return this.__size === 0;
+};
+
 MapPrototype.has = function(key) {
     var root = this.__root;
     return isNull(root) ? false : root.get(0, hashCode(key), key, NOT_SET) !== NOT_SET;

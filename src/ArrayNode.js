@@ -9,8 +9,9 @@ var isNull = require("is_null"),
 
 
 var SHIFT = consts.SHIFT,
+    MAX_ARRAY_MAP_SIZE = consts.MAX_ARRAY_MAP_SIZE,
     EMPTY = new ArrayNode(0, []),
-    ArrayNodePrototype;
+    ArrayNodePrototype = ArrayNode.prototype;
 
 
 module.exports = ArrayNode;
@@ -23,7 +24,6 @@ function ArrayNode(count, array) {
     this.count = count;
     this.array = array;
 }
-ArrayNodePrototype = ArrayNode.prototype;
 
 ArrayNode.EMPTY = EMPTY;
 
@@ -76,7 +76,7 @@ ArrayNodePrototype.remove = function(shift, keyHash, key) {
             count = this.count;
 
             if (isNull(newNode)) {
-                if (count <= 8) {
+                if (count <= MAX_ARRAY_MAP_SIZE) {
                     return pack(array, index);
                 } else {
                     return new ArrayNode(count - 1, cloneAndSet(array, index, newNode));

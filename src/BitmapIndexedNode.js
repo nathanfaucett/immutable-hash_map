@@ -13,8 +13,9 @@ var isNull = require("is_null"),
 
 
 var SHIFT = consts.SHIFT,
+    MAX_BITMAP_INDEXED_SIZE = consts.MAX_BITMAP_INDEXED_SIZE,
     EMPTY = new BitmapIndexedNode(0, []),
-    BitmapIndexedNodePrototype;
+    BitmapIndexedNodePrototype = BitmapIndexedNode.prototype;
 
 
 module.exports = BitmapIndexedNode;
@@ -28,7 +29,6 @@ function BitmapIndexedNode(bitmap, array) {
     this.bitmap = bitmap;
     this.array = array;
 }
-BitmapIndexedNodePrototype = BitmapIndexedNode.prototype;
 
 BitmapIndexedNode.EMPTY = EMPTY;
 
@@ -93,7 +93,7 @@ BitmapIndexedNodePrototype.set = function(shift, keyHash, key, value, addedLeaf)
     } else {
         newNode = bitCount(bitmap);
 
-        if (newNode >= 16) {
+        if (newNode >= MAX_BITMAP_INDEXED_SIZE) {
             nodes = new Array(32);
             jIndex = mask(keyHash, shift);
             nodes[jIndex] = EMPTY.set(shift + SHIFT, keyHash, key, value, addedLeaf);

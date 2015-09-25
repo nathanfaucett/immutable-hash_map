@@ -43,6 +43,8 @@ function Map(value) {
 }
 MapPrototype = Map.prototype;
 
+Map.EMPTY = EMPTY_MAP;
+
 function Map_createMap(_this, value, args) {
     var length = args.length;
 

@@ -8,7 +8,7 @@ var isEqual = require("is_equal"),
 
 
 var EMPTY = new HashCollisionNode(0, []),
-    HashCollisionNodePrototype;
+    HashCollisionNodePrototype = HashCollisionNode.prototype;
 
 
 module.exports = HashCollisionNode;
@@ -22,7 +22,6 @@ function HashCollisionNode(keyHash, count, array) {
     this.count = count;
     this.array = array;
 }
-HashCollisionNodePrototype = HashCollisionNode.prototype;
 
 HashCollisionNode.EMPTY = EMPTY;
 

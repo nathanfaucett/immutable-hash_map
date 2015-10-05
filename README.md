@@ -3,6 +3,10 @@ immutable Map
 
 immutable persistent map for the browser and node.js
 
+# Install
+```bash
+$ npm install git://github.com/nathanfaucett/immutable-map --save
+```
 
 # Usage
 ```javascript

@@ -435,6 +435,20 @@ MapPrototype.toArray = function() {
     return results;
 };
 
+MapPrototype.toObject = function() {
+    var it = this.iterator(),
+        next = it.next(),
+        results = {};
+
+    while (next.done === false) {
+        nextValue = next.value;
+        results[nextValue[0]] = nextValue[1];
+        next = it.next();
+    }
+
+    return results;
+};
+
 MapPrototype.join = function(separator, keyValueSeparator) {
     var it = this.iterator(),
         next = it.next(),

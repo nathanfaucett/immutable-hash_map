@@ -68,6 +68,9 @@ var a0 = a.set(2, 2),
 #### toArray() -> Array<Any>
     returns Map elements in an Array
 
+#### toObject() -> Array<Any>
+    returns Map elements in an Object, keys should be primitives or some key value pairs will be lost
+
 #### join([separator = " "]) -> String
     join all elements of an Map into a String
 

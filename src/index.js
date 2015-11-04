@@ -1,4 +1,5 @@
 var has = require("has"),
+    freeze = require("freeze"),
     isNull = require("is_null"),
     isUndefined = require("is_undefined"),
     isObject = require("is_object"),
@@ -43,7 +44,7 @@ function Map(value) {
 }
 MapPrototype = Map.prototype;
 
-Map.EMPTY = EMPTY_MAP;
+Map.EMPTY = freeze(EMPTY_MAP);
 
 function Map_createMap(_this, value, args) {
     var length = args.length;
@@ -87,7 +88,7 @@ function Map_fromObject(_this, object) {
     if (size !== 0) {
         _this.__size = size;
         _this.__root = newRoot;
-        return _this;
+        return freeze(_this);
     } else {
         return EMPTY_MAP;
     }
@@ -119,7 +120,7 @@ function Map_fromArray(_this, array) {
     if (size !== 0) {
         _this.__root = root;
         _this.__size = size;
-        return _this;
+        return freeze(_this);
     } else {
         return EMPTY_MAP;
     }
@@ -191,7 +192,7 @@ MapPrototype.set = function(key, value) {
         map = new Map(INTERNAL_CREATE);
         map.__size = isNull(addedLeaf.value) ? size : size + 1;
         map.__root = newRoot;
-        return map;
+        return freeze(map);
     }
 };
 
@@ -213,7 +214,7 @@ MapPrototype.remove = function(key) {
             map = new Map(INTERNAL_CREATE);
             map.__size = size - 1;
             map.__root = newRoot;
-            return map;
+            return freeze(map);
         }
     }
 };

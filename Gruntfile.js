@@ -16,10 +16,7 @@ module.exports = function(grunt) {
                 eqeqeq: true,
                 expr: true,
                 eqnull: true,
-                proto: true,
-                globals: {
-                    "Map": true
-                }
+                proto: true
             },
             files: [
                 "Gruntfile.js",

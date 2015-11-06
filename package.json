@@ -1,10 +1,10 @@
 {
-  "name": "immutable-map",
+  "name": "immutable-hash_map",
   "version": "0.0.1",
-  "description": "immutable persistent map for the browser and node.js",
+  "description": "immutable persistent hash_map for the browser and node.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanfaucett/immutable-map.git"
+    "url": "https://github.com/nathanfaucett/immutable-hash_map.git"
   },
   "main": "src/index.js",
   "scripts": {
@@ -15,8 +15,8 @@
     "test-browser-local": "zuul --local 8080 --ui tape -- ./test"
   },
   "keywords": [
-    "immutable-map",
-    "immutable-map.js"
+    "immutable-hash_map",
+    "immutable-hash_map.js"
   ],
   "author": "Nathan Faucett",
   "license": "MIT",

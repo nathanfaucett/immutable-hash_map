@@ -17,54 +17,54 @@ var has = require("has"),
 var INTERNAL_CREATE = {},
 
     ITERATOR_SYMBOL = typeof(Symbol) === "function" ? Symbol.iterator : false,
-    IS_MAP = "__ImmutableMap__",
+    IS_MAP = "__ImmutableHashMap__",
 
     NOT_SET = {},
-    EMPTY_MAP = new Map(INTERNAL_CREATE),
+    EMPTY_MAP = new HashMap(INTERNAL_CREATE),
 
-    MapPrototype;
-
-
-module.exports = Map;
+    HashMapPrototype;
 
 
-function Map(value) {
-    if (!(this instanceof Map)) {
-        throw new Error("Map() must be called with new");
+module.exports = HashMap;
+
+
+function HashMap(value) {
+    if (!(this instanceof HashMap)) {
+        throw new Error("HashMap() must be called with new");
     }
 
     this.__size = 0;
     this.__root = null;
 
     if (value !== INTERNAL_CREATE) {
-        return Map_createMap(this, value, arguments);
+        return HashMap_createHashMap(this, value, arguments);
     } else {
         return this;
     }
 }
-MapPrototype = Map.prototype;
+HashMapPrototype = HashMap.prototype;
 
-Map.EMPTY = freeze(EMPTY_MAP);
+HashMap.EMPTY = freeze(EMPTY_MAP);
 
-function Map_createMap(_this, value, args) {
+function HashMap_createHashMap(_this, value, args) {
     var length = args.length;
 
     if (length === 1) {
         if (isArrayLike(value)) {
-            return Map_fromArray(_this, value.toArray ? value.toArray() : value);
+            return HashMap_fromArray(_this, value.toArray ? value.toArray() : value);
         } else if (isObject(value)) {
-            return Map_fromObject(_this, value);
+            return HashMap_fromObject(_this, value);
         } else {
             return EMPTY_MAP;
         }
     } else if (length > 1) {
-        return Map_fromArray(_this, args);
+        return HashMap_fromArray(_this, args);
     } else {
         return EMPTY_MAP;
     }
 }
 
-function Map_fromObject(_this, object) {
+function HashMap_fromObject(_this, object) {
     var size = 0,
         root = BitmapIndexedNode.EMPTY,
         key, value, newRoot, addedLeaf;
@@ -94,7 +94,7 @@ function Map_fromObject(_this, object) {
     }
 }
 
-function Map_fromArray(_this, array) {
+function HashMap_fromArray(_this, array) {
     var i = 0,
         il = array.length,
         root = BitmapIndexedNode.EMPTY,
@@ -126,60 +126,60 @@ function Map_fromArray(_this, array) {
     }
 }
 
-Map.of = function(value) {
+HashMap.of = function(value) {
     if (arguments.length > 0) {
-        return Map_createMap(new Map(INTERNAL_CREATE), value, arguments);
+        return HashMap_createHashMap(new HashMap(INTERNAL_CREATE), value, arguments);
     } else {
         return EMPTY_MAP;
     }
 };
 
-Map.fromArguments = function(args) {
+HashMap.fromArguments = function(args) {
     if (args.length > 0) {
-        return Map_createMap(new Map(INTERNAL_CREATE), args[0], args);
+        return HashMap_createHashMap(new HashMap(INTERNAL_CREATE), args[0], args);
     } else {
         return EMPTY_MAP;
     }
 };
 
-Map.isMap = function(value) {
+HashMap.isHashMap = function(value) {
     return value && value[IS_MAP] === true;
 };
 
-defineProperty(MapPrototype, IS_MAP, {
+defineProperty(HashMapPrototype, IS_MAP, {
     configurable: false,
     enumerable: false,
     writable: false,
     value: true
 });
 
-MapPrototype.size = function() {
+HashMapPrototype.size = function() {
     return this.__size;
 };
 
 if (defineProperty.hasGettersSetters) {
-    defineProperty(MapPrototype, "length", {
-        get: MapPrototype.size
+    defineProperty(HashMapPrototype, "length", {
+        get: HashMapPrototype.size
     });
 }
 
-MapPrototype.count = MapPrototype.size;
+HashMapPrototype.count = HashMapPrototype.size;
 
-MapPrototype.isEmpty = function() {
+HashMapPrototype.isEmpty = function() {
     return this.__size === 0;
 };
 
-MapPrototype.has = function(key) {
+HashMapPrototype.has = function(key) {
     var root = this.__root;
     return isNull(root) ? false : root.get(0, hashCode(key), key, NOT_SET) !== NOT_SET;
 };
 
-MapPrototype.get = function(key) {
+HashMapPrototype.get = function(key) {
     var root = this.__root;
     return isNull(root) ? undefined : root.get(0, hashCode(key), key);
 };
 
-MapPrototype.set = function(key, value) {
+HashMapPrototype.set = function(key, value) {
     var root = this.__root,
         size = this.__size,
         addedLeaf = new Box(null),
@@ -189,14 +189,14 @@ MapPrototype.set = function(key, value) {
     if (newRoot === root) {
         return this;
     } else {
-        map = new Map(INTERNAL_CREATE);
+        map = new HashMap(INTERNAL_CREATE);
         map.__size = isNull(addedLeaf.value) ? size : size + 1;
         map.__root = newRoot;
         return freeze(map);
     }
 };
 
-MapPrototype.remove = function(key) {
+HashMapPrototype.remove = function(key) {
     var root = this.__root,
         size = this.__size,
         newRoot;
@@ -211,7 +211,7 @@ MapPrototype.remove = function(key) {
         if (newRoot === root) {
             return this;
         } else {
-            map = new Map(INTERNAL_CREATE);
+            map = new HashMap(INTERNAL_CREATE);
             map.__size = size - 1;
             map.__root = newRoot;
             return freeze(map);
@@ -227,7 +227,7 @@ function next() {
     return new IteratorValue(true, undefined);
 }
 
-MapPrototype.iterator = function(reverse) {
+HashMapPrototype.iterator = function(reverse) {
     var root = this.__root;
 
     if (isNull(root)) {
@@ -238,10 +238,10 @@ MapPrototype.iterator = function(reverse) {
 };
 
 if (ITERATOR_SYMBOL) {
-    MapPrototype[ITERATOR_SYMBOL] = MapPrototype.iterator;
+    HashMapPrototype[ITERATOR_SYMBOL] = HashMapPrototype.iterator;
 }
 
-function Map_every(_this, it, callback) {
+function HashMap_every(_this, it, callback) {
     var next = it.next(),
         nextValue;
 
@@ -256,11 +256,11 @@ function Map_every(_this, it, callback) {
     return true;
 }
 
-MapPrototype.every = function(callback, thisArg) {
-    return Map_every(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+HashMapPrototype.every = function(callback, thisArg) {
+    return HashMap_every(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
-function Map_filter(_this, it, callback) {
+function HashMap_filter(_this, it, callback) {
     var results = [],
         next = it.next(),
         index = 0,
@@ -279,14 +279,14 @@ function Map_filter(_this, it, callback) {
         next = it.next();
     }
 
-    return Map.of(results);
+    return HashMap.of(results);
 }
 
-MapPrototype.filter = function(callback, thisArg) {
-    return Map_filter(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+HashMapPrototype.filter = function(callback, thisArg) {
+    return HashMap_filter(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
-function Map_forEach(_this, it, callback) {
+function HashMap_forEach(_this, it, callback) {
     var next = it.next(),
         nextValue;
 
@@ -301,13 +301,13 @@ function Map_forEach(_this, it, callback) {
     return _this;
 }
 
-MapPrototype.forEach = function(callback, thisArg) {
-    return Map_forEach(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+HashMapPrototype.forEach = function(callback, thisArg) {
+    return HashMap_forEach(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
-MapPrototype.each = MapPrototype.forEach;
+HashMapPrototype.each = HashMapPrototype.forEach;
 
-function Map_forEachRight(_this, it, callback) {
+function HashMap_forEachRight(_this, it, callback) {
     var next = it.next(),
         nextValue;
 
@@ -322,13 +322,13 @@ function Map_forEachRight(_this, it, callback) {
     return _this;
 }
 
-MapPrototype.forEachRight = function(callback, thisArg) {
-    return Map_forEachRight(this, this.iterator(true), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+HashMapPrototype.forEachRight = function(callback, thisArg) {
+    return HashMap_forEachRight(this, this.iterator(true), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
-MapPrototype.eachRight = MapPrototype.forEachRight;
+HashMapPrototype.eachRight = HashMapPrototype.forEachRight;
 
-function Map_map(_this, it, callback) {
+function HashMap_map(_this, it, callback) {
     var next = it.next(),
         results = new Array(_this.__size * 2),
         index = 0,
@@ -343,14 +343,14 @@ function Map_map(_this, it, callback) {
         next = it.next();
     }
 
-    return Map.of(results);
+    return HashMap.of(results);
 }
 
-MapPrototype.map = function(callback, thisArg) {
-    return Map_map(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+HashMapPrototype.map = function(callback, thisArg) {
+    return HashMap_map(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
-function Map_reduce(_this, it, callback, initialValue) {
+function HashMap_reduce(_this, it, callback, initialValue) {
     var next = it.next(),
         value = initialValue,
         nextValue, key;
@@ -371,11 +371,11 @@ function Map_reduce(_this, it, callback, initialValue) {
     return value;
 }
 
-MapPrototype.reduce = function(callback, initialValue, thisArg) {
-    return Map_reduce(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
+HashMapPrototype.reduce = function(callback, initialValue, thisArg) {
+    return HashMap_reduce(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
 };
 
-function Map_reduceRight(_this, it, callback, initialValue) {
+function HashMap_reduceRight(_this, it, callback, initialValue) {
     var next = it.next(),
         value = initialValue,
         nextValue, key;
@@ -396,11 +396,11 @@ function Map_reduceRight(_this, it, callback, initialValue) {
     return value;
 }
 
-MapPrototype.reduceRight = function(callback, initialValue, thisArg) {
-    return Map_reduceRight(this, this.iterator(true), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
+HashMapPrototype.reduceRight = function(callback, initialValue, thisArg) {
+    return HashMap_reduceRight(this, this.iterator(true), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
 };
 
-function Map_some(_this, it, callback) {
+function HashMap_some(_this, it, callback) {
     var next = it.next(),
         nextValue;
 
@@ -416,11 +416,11 @@ function Map_some(_this, it, callback) {
     return false;
 }
 
-MapPrototype.some = function(callback, thisArg) {
-    return Map_some(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+HashMapPrototype.some = function(callback, thisArg) {
+    return HashMap_some(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
-MapPrototype.toArray = function() {
+HashMapPrototype.toArray = function() {
     var it = this.iterator(),
         next = it.next(),
         results = new Array(this.__size * 2),
@@ -436,7 +436,7 @@ MapPrototype.toArray = function() {
     return results;
 };
 
-MapPrototype.toObject = function() {
+HashMapPrototype.toObject = function() {
     var it = this.iterator(),
         next = it.next(),
         results = {};
@@ -450,7 +450,7 @@ MapPrototype.toObject = function() {
     return results;
 };
 
-MapPrototype.join = function(separator, keyValueSeparator) {
+HashMapPrototype.join = function(separator, keyValueSeparator) {
     var it = this.iterator(),
         next = it.next(),
         result = "";
@@ -473,13 +473,13 @@ MapPrototype.join = function(separator, keyValueSeparator) {
     return result;
 };
 
-MapPrototype.toString = function() {
+HashMapPrototype.toString = function() {
     return "{" + this.join() + "}";
 };
 
-MapPrototype.inspect = MapPrototype.toString;
+HashMapPrototype.inspect = HashMapPrototype.toString;
 
-function Map_equal(ait, bit) {
+function HashMap_equal(ait, bit) {
     var anext = ait.next(),
         bnext = bit.next(),
         anextValue, bnextValue;
@@ -499,16 +499,16 @@ function Map_equal(ait, bit) {
     return true;
 }
 
-Map.equal = function(a, b) {
+HashMap.equal = function(a, b) {
     if (a === b) {
         return true;
     } else if (!a || !b || a.__size !== b.__size) {
         return false;
     } else {
-        return Map_equal(a.iterator(), b.iterator());
+        return HashMap_equal(a.iterator(), b.iterator());
     }
 };
 
-MapPrototype.equals = function(b) {
-    return Map.equal(this, b);
+HashMapPrototype.equals = function(b) {
+    return HashMap.equal(this, b);
 };

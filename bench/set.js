@@ -7,7 +7,7 @@ var Benchmark = require("benchmark"),
 var suite = new Benchmark.Suite();
 
 
-suite.add("immutable-map", function() {
+suite.add("immutable-hash_map", function() {
     var a = new Map(0, 0, 1, 1);
 
     return function() {
@@ -23,7 +23,7 @@ suite.add("Immutable", function() {
     };
 }());
 
-suite.add("mori map", function() {
+suite.add("mori hash_map", function() {
     var a = mori.hashMap(0, 0, 1, 1);
 
     return function() {

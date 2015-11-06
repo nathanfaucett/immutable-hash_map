@@ -1,22 +1,22 @@
-immutable Map
+immutable HashMap
 =======
 
-immutable persistent map for the browser and node.js
+immutable persistent hash map for the browser and node.js
 
 # Install
 ```bash
-$ npm install git://github.com/nathanfaucett/immutable-map --save
+$ npm install git://github.com/nathanfaucett/immutable-hash_map --save
 ```
 
 # Usage
 ```javascript
-var ImmutableMap = require("immutable-map");
+var ImmutableHashMap = require("immutable-hash_map");
 
 
-var a = new ImmutableMap([0, 0, 1, 1]),
-    b = new ImmutableMap(0, 0, 1, 1),
-    c = ImmutableMap.of([0, 0, 1, 1]),
-    d = ImmutableMap.of(0, 0, 1, 1);
+var a = new ImmutableHashMap([0, 0, 1, 1]),
+    b = new ImmutableHashMap(0, 0, 1, 1),
+    c = ImmutableHashMap.of([0, 0, 1, 1]),
+    d = ImmutableHashMap.of(0, 0, 1, 1);
 
 var a0 = a.set(2, 2),
     a1 = a.remove(1);
@@ -27,37 +27,37 @@ var a0 = a.set(2, 2),
 ## Members
 
 #### length -> Number
-    returns size of Map, only available if Object.defineProperty is supported
+    returns size of HashMap, only available if Object.defineProperty is supported
 
 
 ## Static Functions
 
-#### Map.isMap(value: Any) -> Boolean
-    returns true if value is a map else false
+#### HashMap.isHashMap(value: Any) -> Boolean
+    returns true if value is a hash map else false
 
-#### Map.of(...values: Array<Any>) -> Map
-    creates Map from passed values same as new Map(...values: Array<Any>)
+#### HashMap.of(...values: Array<Any>) -> HashMap
+    creates HashMap from passed values same as new HashMap(...values: Array<Any>)
 
-#### Map.equal(a: Map, b: Map) -> Boolean
-    compares maps by values
+#### HashMap.equal(a: HashMap, b: HashMap) -> Boolean
+    compares hash maps by values
 
 
 ## Functions
 
 #### size() -> Number
-    returns size of Map
+    returns size of HashMap
 
 #### get(key: Any) -> Any
     returns value at index
 
 #### has(key: Any) -> Boolean
-    returns true if map contains key
+    returns true if hash map contains key
 
-#### set(key: Any, value: Any) -> Map
-    returns new Map if value at key is different
+#### set(key: Any, value: Any) -> HashMap
+    returns new HashMap if value at key is different
 
-#### remove(key: Any) -> Map
-    returns new Map without the value at key
+#### remove(key: Any) -> HashMap
+    returns new HashMap without the value at key
 
 #### iterator([reverse = false: Boolean]) -> Iterator
     returns Iterator
@@ -66,16 +66,16 @@ var a0 = a.set(2, 2),
     common Array methods
 
 #### toArray() -> Array<Any>
-    returns Map elements in an Array
+    returns HashMap elements in an Array
 
 #### toObject() -> Array<Any>
-    returns Map elements in an Object, keys should be primitives or some key value pairs will be lost
+    returns HashMap elements in an Object, keys should be primitives or some key value pairs will be lost
 
 #### join([separator = " "]) -> String
-    join all elements of an Map into a String
+    join all elements of an HashMap into a String
 
 #### toString() -> String
-    String representation of Map
+    String representation of HashMap
 
-#### equals(other: Map) -> Boolean
-    compares this map to other map by values
+#### equals(other: HashMap) -> Boolean
+    compares this hash map to other hash map by values

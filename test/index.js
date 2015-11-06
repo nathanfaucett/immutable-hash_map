@@ -14,10 +14,10 @@ tape("HashMap() should create new HashMap from passed arguments", function(asser
 });
 
 tape("HashMap.isHashMap(value) should return true if the object is a HashMap", function(assert) {
-    var hash_map = new HashMap(0, 1, 2, 3),
+    var hashMap = new HashMap(0, 1, 2, 3),
         notHashMap = {};
 
-    assert.equal(HashMap.isHashMap(hash_map), true);
+    assert.equal(HashMap.isHashMap(hashMap), true);
     assert.equal(HashMap.isHashMap(notHashMap), false);
 
     assert.end();
@@ -31,21 +31,21 @@ tape("HashMap size() should return size of the HashMap", function(assert) {
 });
 
 tape("HashMap get(key : Any) should return element where key equals passed key", function(assert) {
-    var hash_map = new HashMap(1, 2, 3, 4);
+    var hashMap = new HashMap(1, 2, 3, 4);
 
-    assert.equal(hash_map.get(1), 2);
-    assert.equal(hash_map.get(3), 4);
-    assert.equal(hash_map.get(5), undefined);
+    assert.equal(hashMap.get(1), 2);
+    assert.equal(hashMap.get(3), 4);
+    assert.equal(hashMap.get(5), undefined);
 
     assert.end();
 });
 
 tape("HashMap has(key : Any) should return if HashMap has an element where key equals passed key", function(assert) {
-    var hash_map = new HashMap(0, 0, 1, 1);
+    var hashMap = new HashMap(0, 0, 1, 1);
 
-    assert.equal(hash_map.has(0), true);
-    assert.equal(hash_map.has(1), true);
-    assert.equal(hash_map.has(2), false);
+    assert.equal(hashMap.has(0), true);
+    assert.equal(hashMap.has(1), true);
+    assert.equal(hashMap.has(2), false);
 
     assert.end();
 });
@@ -72,7 +72,7 @@ tape("HashMap remove(key : Any) should return new HashMap with the removed key",
     assert.end();
 });
 
-tape("HashMap static equal(a : HashMap, b : HashMap) should return a deep equals of hash_map a and b", function(assert) {
+tape("HashMap static equal(a : HashMap, b : HashMap) should return a deep equals of hashMap a and b", function(assert) {
     assert.equal(HashMap.equal(new HashMap(0, 1, 2, 3), new HashMap(0, 1, 2, 3)), true);
     assert.equal(HashMap.equal(new HashMap(0, 1, 2, 3), new HashMap(0, 0, 2, 2)), false);
     assert.equal(HashMap.equal(new HashMap(0, 1, 2, 3), new HashMap(1, 2)), false);
@@ -178,7 +178,7 @@ tape("HashMap forEachRight(callback[, thisArg])", function(assert) {
     assert.end();
 });
 
-tape("HashMap hash_map(callback[, thisArg])", function(assert) {
+tape("HashMap map(callback[, thisArg])", function(assert) {
     assert.deepEquals(
         HashMap.of([0, 0, 1, 1, 2, 2]).map(function(value, key) {
             return [key, value + key];
@@ -224,11 +224,11 @@ tape("HashMap some(callback[, thisArg])", function(assert) {
 });
 
 tape("HashMap join([separator = \", \", [keyValueSeparator = \": \"]]) should join all elements of an HashMap into a String", function(assert) {
-    var hash_map = new HashMap(0, 0, 1, 1);
+    var hashMap = new HashMap(0, 0, 1, 1);
 
-    assert.equal(hash_map.join(), "0: 0, 1: 1");
-    assert.equal(hash_map.join(" "), "0: 0 1: 1");
-    assert.equal(hash_map.join(", ", " => "), "0 => 0, 1 => 1");
+    assert.equal(hashMap.join(), "0: 0, 1: 1");
+    assert.equal(hashMap.join(" "), "0: 0 1: 1");
+    assert.equal(hashMap.join(", ", " => "), "0 => 0, 1 => 1");
 
     assert.end();
 });

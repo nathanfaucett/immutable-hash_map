@@ -126,20 +126,16 @@ function HashMap_fromArray(_this, array) {
     }
 }
 
-HashMap.of = function(value) {
-    if (arguments.length > 0) {
-        return HashMap_createHashMap(new HashMap(INTERNAL_CREATE), value, arguments);
+HashMap.fromArray = function(array) {
+    if (array.length > 0) {
+        return HashMap_createHashMap(new HashMap(INTERNAL_CREATE), array[0], array);
     } else {
         return EMPTY_MAP;
     }
 };
 
-HashMap.fromArguments = function(args) {
-    if (args.length > 0) {
-        return HashMap_createHashMap(new HashMap(INTERNAL_CREATE), args[0], args);
-    } else {
-        return EMPTY_MAP;
-    }
+HashMap.of = function() {
+    return HashMap.fromArray(arguments);
 };
 
 HashMap.isHashMap = function(value) {

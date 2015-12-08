@@ -454,7 +454,7 @@ HashMapPrototype.join = function(separator, keyValueSeparator) {
     separator = separator || ", ";
     keyValueSeparator = keyValueSeparator || ": ";
 
-    while (true) {
+    while (!next.done) {
         nextValue = next.value;
         next = it.next();
 

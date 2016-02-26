@@ -20,7 +20,7 @@ var INTERNAL_CREATE = {},
     IS_MAP = "__ImmutableHashMap__",
 
     NOT_SET = {},
-    EMPTY_MAP = new HashMap(INTERNAL_CREATE),
+    EMPTY_MAP = freeze(new HashMap(INTERNAL_CREATE)),
 
     HashMapPrototype;
 
@@ -44,7 +44,7 @@ function HashMap(value) {
 }
 HashMapPrototype = HashMap.prototype;
 
-HashMap.EMPTY = freeze(EMPTY_MAP);
+HashMap.EMPTY = EMPTY_MAP;
 
 function HashMap_createHashMap(_this, value, args) {
     var length = args.length;

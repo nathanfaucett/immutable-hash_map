@@ -1,4 +1,8 @@
-var copyArray = require("./copyArray");
+var isUndefined = require("is_undefined"),
+    arrayCopy = require("array_copy");
+
+
+var baseArrayCopy = arrayCopy.base;
 
 
 module.exports = cloneAndSet;
@@ -8,10 +12,10 @@ function cloneAndSet(array, index0, value0, index1, value1) {
     var length = array.length,
         results = new Array(length);
 
-    copyArray(array, 0, results, 0, length);
+    baseArrayCopy(array, 0, results, 0, length);
 
     results[index0] = value0;
-    if (index1 !== undefined) {
+    if (!isUndefined(index1)) {
         results[index1] = value1;
     }
 

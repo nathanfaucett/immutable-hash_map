@@ -1,13 +1,14 @@
 var isEqual = require("is_equal"),
     bitpos = require("./bitpos"),
-    copyArray = require("./copyArray"),
+    arrayCopy = require("array_copy"),
     cloneAndSet = require("./cloneAndSet"),
     removePair = require("./removePair"),
     nodeIterator = require("./nodeIterator"),
     BitmapIndexedNode;
 
 
-var EMPTY = new HashCollisionNode(0, []),
+var baseArrayCopy = arrayCopy.base,
+    EMPTY = new HashCollisionNode(0, []),
     HashCollisionNodePrototype = HashCollisionNode.prototype;
 
 
@@ -56,7 +57,7 @@ HashCollisionNodePrototype.set = function(shift, keyHash, key, value, addedLeaf)
             }
         } else {
             newArray = new Array(2 * (count + 1));
-            copyArray(array, 0, newArray, 0, 2 * count);
+            baseArrayCopy(array, 0, newArray, 0, 2 * count);
             newArray[2 * count] = key;
             newArray[2 * count + 1] = value;
             addedLeaf.value = addedLeaf;

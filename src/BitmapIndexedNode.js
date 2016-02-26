@@ -1,18 +1,19 @@
 var isNull = require("is_null"),
     isEqual = require("is_equal"),
     hashCode = require("hash_code"),
+    bitCount = require("bit_count"),
     consts = require("./consts"),
     bitpos = require("./bitpos"),
-    copyArray = require("./copyArray"),
+    arrayCopy = require("array_copy"),
     cloneAndSet = require("./cloneAndSet"),
     removePair = require("./removePair"),
     mask = require("./mask"),
-    bitCount = require("./bitCount"),
     nodeIterator = require("./nodeIterator"),
     ArrayNode, createNode;
 
 
-var SHIFT = consts.SHIFT,
+var baseArrayCopy = arrayCopy.base,
+    SHIFT = consts.SHIFT,
     MAX_BITMAP_INDEXED_SIZE = consts.MAX_BITMAP_INDEXED_SIZE,
     EMPTY = new BitmapIndexedNode(0, []),
     BitmapIndexedNodePrototype = BitmapIndexedNode.prototype;
@@ -114,13 +115,13 @@ BitmapIndexedNodePrototype.set = function(shift, keyHash, key, value, addedLeaf)
             return new ArrayNode(newNode + 1, nodes);
         } else {
             newArray = new Array(2 * (newNode + 1));
-            copyArray(array, 0, newArray, 0, 2 * index);
+            baseArrayCopy(array, 0, newArray, 0, 2 * index);
 
             newArray[2 * index] = key;
             addedLeaf.value = addedLeaf;
             newArray[2 * index + 1] = value;
 
-            copyArray(array, 2 * index, newArray, 2 * (index + 1), 2 * (newNode - index));
+            baseArrayCopy(array, 2 * index, newArray, 2 * (index + 1), 2 * (newNode - index));
 
             return new BitmapIndexedNode(bitmap | bit, newArray);
         }

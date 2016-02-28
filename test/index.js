@@ -181,7 +181,7 @@ tape("HashMap forEachRight(callback[, thisArg])", function(assert) {
 tape("HashMap map(callback[, thisArg])", function(assert) {
     assert.deepEquals(
         HashMap.of([0, 0, 1, 1, 2, 2]).map(function(value, key) {
-            return [key, value + key];
+            return value + key;
         }).toArray(), [0, 0, 1, 2, 2, 4]
     );
     assert.end();

@@ -329,14 +329,13 @@ function HashMap_map(_this, it, callback) {
     var next = it.next(),
         results = new Array(_this.__size * 2),
         index = 0,
-        nextValue, key, resultValue;
+        nextValue, key;
 
     while (next.done === false) {
         nextValue = next.value;
         key = nextValue[0];
-        resultValue = callback(nextValue[1], key, _this);
-        results[index++] = resultValue[0];
-        results[index++] = resultValue[1];
+        results[index++] = key;
+        results[index++] = callback(nextValue[1], key, _this);
         next = it.next();
     }
 

@@ -10,8 +10,8 @@ var isNull = require("is_null"),
 var SHIFT = consts.SHIFT,
     MAX_ARRAY_MAP_SIZE = consts.MAX_ARRAY_MAP_SIZE,
     EMPTY = new ArrayNode(0, []),
-    IteratorValue = Iterator.Value;
-ArrayNodePrototype = ArrayNode.prototype;
+    IteratorValue = Iterator.Value,
+    ArrayNodePrototype = ArrayNode.prototype;
 
 
 module.exports = ArrayNode;

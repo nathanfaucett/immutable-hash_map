@@ -4,14 +4,14 @@ var isNull = require("is_null"),
     mask = require("./mask"),
     cloneAndSet = require("./cloneAndSet"),
     Iterator = require("./Iterator"),
-    IteratorValue = require("./IteratorValue"),
     BitmapIndexedNode;
 
 
 var SHIFT = consts.SHIFT,
     MAX_ARRAY_MAP_SIZE = consts.MAX_ARRAY_MAP_SIZE,
     EMPTY = new ArrayNode(0, []),
-    ArrayNodePrototype = ArrayNode.prototype;
+    IteratorValue = Iterator.Value;
+ArrayNodePrototype = ArrayNode.prototype;
 
 
 module.exports = ArrayNode;
@@ -123,7 +123,7 @@ function ArrayNode_iterator(_this) {
         if (hasNext()) {
             return nestedIter.next();
         } else {
-            return new IteratorValue(true, undefined);
+            return new IteratorValue(undefined, true);
         }
     }
 
@@ -165,7 +165,7 @@ function ArrayNode_iteratorReverse(_this) {
         if (hasNext()) {
             return nestedIter.next();
         } else {
-            return new IteratorValue(true, undefined);
+            return new IteratorValue(undefined, true);
         }
     }
 

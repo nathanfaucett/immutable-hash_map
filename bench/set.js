@@ -1,14 +1,14 @@
 var Benchmark = require("benchmark"),
     mori = require("mori"),
     Immutable = require("immutable"),
-    Map = require("..");
+    ImmutableMap = require("..");
 
 
 var suite = new Benchmark.Suite();
 
 
 suite.add("immutable-hash_map", function() {
-    var a = new Map(0, 0, 1, 1);
+    var a = new ImmutableMap(0, 0, 1, 1);
 
     return function() {
         a.set(0, 1);
@@ -28,6 +28,16 @@ suite.add("mori hash_map", function() {
 
     return function() {
         mori.set(a, 0, 1);
+    };
+}());
+
+suite.add("native map", function() {
+    var a = new Map();
+    a.set(0, 0);
+    a.set(1, 1);
+
+    return function() {
+        a.set(0, 1);
     };
 }());
 

@@ -1,7 +1,9 @@
 var isNull = require("is_null"),
     isUndefined = require("is_undefined"),
-    Iterator = require("./Iterator"),
-    IteratorValue = require("./IteratorValue");
+    Iterator = require("./Iterator");
+
+
+var IteratorValue = Iterator.Value;
 
 
 module.exports = nodeIterator;
@@ -59,7 +61,7 @@ function iterator(_this) {
 
         if (!isNull(entry)) {
             nextEntry = null;
-            return new IteratorValue(false, entry);
+            return new IteratorValue(entry, false);
         } else if (!isNull(nextIter)) {
             entry = nextIter.next();
 
@@ -67,11 +69,11 @@ function iterator(_this) {
                 nextIter = null;
             }
 
-            return new IteratorValue(false, entry);
+            return new IteratorValue(entry, false);
         } else if (advance()) {
             return next();
         } else {
-            return new IteratorValue(true, undefined);
+            return new IteratorValue(undefined, true);
         }
     }
 
@@ -122,7 +124,7 @@ function iteratorReverse(_this) {
 
         if (!isNull(entry)) {
             nextEntry = null;
-            return new IteratorValue(false, entry);
+            return new IteratorValue(entry, false);
         } else if (!isNull(nextIter)) {
             entry = nextIter.next();
 
@@ -130,11 +132,11 @@ function iteratorReverse(_this) {
                 nextIter = null;
             }
 
-            return new IteratorValue(false, entry);
+            return new IteratorValue(entry, false);
         } else if (advance()) {
             return next();
         } else {
-            return new IteratorValue(true, undefined);
+            return new IteratorValue(undefined, true);
         }
     }
 

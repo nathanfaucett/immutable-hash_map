@@ -10,7 +10,6 @@ var has = require("has"),
     fastBindThis = require("fast_bind_this"),
     Box = require("./Box"),
     Iterator = require("./Iterator"),
-    IteratorValue = require("./IteratorValue"),
     BitmapIndexedNode = require("./BitmapIndexedNode");
 
 
@@ -21,6 +20,8 @@ var INTERNAL_CREATE = {},
 
     NOT_SET = {},
     EMPTY_MAP = freeze(new HashMap(INTERNAL_CREATE)),
+
+    IteratorValue = Iterator.Value,
 
     HashMapPrototype;
 
@@ -139,7 +140,7 @@ HashMap.of = function() {
 };
 
 HashMap.isHashMap = function(value) {
-    return value && value[IS_MAP] === true;
+    return !!(value && value[IS_MAP]);
 };
 
 defineProperty(HashMapPrototype, IS_MAP, {
@@ -170,9 +171,9 @@ HashMapPrototype.has = function(key) {
     return isNull(root) ? false : root.get(0, hashCode(key), key, NOT_SET) !== NOT_SET;
 };
 
-HashMapPrototype.get = function(key) {
+HashMapPrototype.get = function(key, notSetValue) {
     var root = this.__root;
-    return isNull(root) ? undefined : root.get(0, hashCode(key), key);
+    return isNull(root) ? notSetValue : root.get(0, hashCode(key), key);
 };
 
 HashMapPrototype.set = function(key, value) {
@@ -220,7 +221,7 @@ function hasNext() {
 }
 
 function next() {
-    return new IteratorValue(true, undefined);
+    return new IteratorValue(undefined, true);
 }
 
 HashMapPrototype.iterator = function(reverse) {

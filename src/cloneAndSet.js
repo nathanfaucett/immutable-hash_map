@@ -1,5 +1,5 @@
-var isUndefined = require("is_undefined"),
-    arrayCopy = require("array_copy");
+var isUndefined = require("@nathanfaucett/is_undefined"),
+    arrayCopy = require("@nathanfaucett/array_copy");
 
 
 var baseArrayCopy = arrayCopy.base;

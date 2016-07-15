@@ -1,4 +1,4 @@
-var hashCode = require("hash_code"),
+var hashCode = require("@nathanfaucett/hash_code"),
     Box = require("./Box"),
     HashCollisionNode, BitmapIndexedNode;
 

@@ -1,5 +1,5 @@
-var isNull = require("is_null"),
-    isUndefined = require("is_undefined"),
+var isNull = require("@nathanfaucett/is_null"),
+    isUndefined = require("@nathanfaucett/is_undefined"),
     Iterator = require("./Iterator");
 
 

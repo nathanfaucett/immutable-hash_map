@@ -1,5 +1,5 @@
 {
-  "name": "immutable-hash_map",
+  "name": "@nathanfaucett/immutable-hash_map",
   "version": "0.0.1",
   "description": "immutable persistent hash_map for the browser and node.js",
   "repository": {
@@ -12,7 +12,7 @@
     "test": "npm run test-node",
     "test-node": "node ./test | ./node_modules/.bin/tap-spec",
     "test-node-raw": "node ./test",
-    "test-browser-local": "zuul --local 8080 --ui tape -- ./test"
+    "test-browser-local": "zuul --local 9999 --ui tape -- ./test"
   },
   "keywords": [
     "immutable-hash_map",
@@ -23,9 +23,9 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "benchmark": "^1.0.0",
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.11.3",
-    "grunt-jsbeautifier": "^0.2.10",
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-jsbeautifier": "^0.2.13",
     "immutable": "^3.7.6",
     "mori": "^0.3.2",
     "tap-spec": "^4.1.0",
@@ -33,22 +33,22 @@
     "zuul": "^3.7.2"
   },
   "dependencies": {
-    "array_copy": "git://github.com/nathanfaucett/array_copy.git",
-    "bit_count": "git://github.com/nathanfaucett/bit_count.git",
-    "define_property": "git://github.com/nathanfaucett/define_property.git",
-    "fast_bind_this": "git://github.com/nathanfaucett/fast_bind_this.git",
-    "fast_slice": "git://github.com/nathanfaucett/fast_slice.git",
-    "freeze": "git://github.com/nathanfaucett/freeze.git",
-    "has": "git://github.com/nathanfaucett/has.git",
-    "hash_code": "git://github.com/nathanfaucett/hash_code.git",
-    "inherits": "git://github.com/nathanfaucett/inherits.git",
-    "is_array_like": "git://github.com/nathanfaucett/is_array_like.git",
-    "is_equal": "git://github.com/nathanfaucett/is_equal.git",
-    "is_native": "git://github.com/nathanfaucett/is_native.git",
-    "is_null": "git://github.com/nathanfaucett/is_null.git",
-    "is_null_or_undefined": "git://github.com/nathanfaucett/is_null_or_undefined.git",
-    "is_object": "git://github.com/nathanfaucett/is_object.git",
-    "is_undefined": "git://github.com/nathanfaucett/is_undefined.git",
-    "iterator": "git://github.com/nathanfaucett/iterator.git"
+    "@nathanfaucett/array_copy": "^0.0.1",
+    "@nathanfaucett/bit_count": "^0.0.1",
+    "@nathanfaucett/define_property": "^0.0.1",
+    "@nathanfaucett/fast_bind_this": "^0.0.1",
+    "@nathanfaucett/fast_slice": "^0.0.1",
+    "@nathanfaucett/freeze": "^0.0.1",
+    "@nathanfaucett/has": "^0.0.1",
+    "@nathanfaucett/hash_code": "^0.0.1",
+    "@nathanfaucett/inherits": "^0.0.1",
+    "@nathanfaucett/is_array_like": "^0.0.2",
+    "@nathanfaucett/is_equal": "^0.0.1",
+    "@nathanfaucett/is_native": "^0.0.2",
+    "@nathanfaucett/is_null": "^0.0.1",
+    "@nathanfaucett/is_null_or_undefined": "^0.0.1",
+    "@nathanfaucett/is_object": "^0.0.1",
+    "@nathanfaucett/is_undefined": "^0.0.1",
+    "@nathanfaucett/iterator": "^0.0.1"
   }
 }

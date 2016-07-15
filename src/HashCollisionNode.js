@@ -1,6 +1,6 @@
-var isEqual = require("is_equal"),
+var isEqual = require("@nathanfaucett/is_equal"),
     bitpos = require("./bitpos"),
-    arrayCopy = require("array_copy"),
+    arrayCopy = require("@nathanfaucett/array_copy"),
     cloneAndSet = require("./cloneAndSet"),
     removePair = require("./removePair"),
     nodeIterator = require("./nodeIterator"),

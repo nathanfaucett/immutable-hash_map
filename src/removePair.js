@@ -1,4 +1,4 @@
-var arrayCopy = require("array_copy");
+var arrayCopy = require("@nathanfaucett/array_copy");
 
 
 var baseArrayCopy = arrayCopy.base;

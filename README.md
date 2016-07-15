@@ -5,12 +5,12 @@ immutable persistent hash map for the browser and node.js
 
 # Install
 ```bash
-$ npm install git://github.com/nathanfaucett/immutable-hash_map --save
+$ npm install @nathanfaucett/immutable-hash_map --save
 ```
 
 # Usage
 ```javascript
-var ImmutableHashMap = require("immutable-hash_map");
+var ImmutableHashMap = require("@nathanfaucett/immutable-hash_map");
 
 
 var a = new ImmutableHashMap([0, 0, 1, 1]),

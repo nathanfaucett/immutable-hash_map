@@ -1,5 +1,5 @@
-var inherits = require("inherits"),
-    BaseIterator = require("iterator");
+var inherits = require("@nathanfaucett/inherits"),
+    BaseIterator = require("@nathanfaucett/iterator");
 
 
 module.exports = Iterator;

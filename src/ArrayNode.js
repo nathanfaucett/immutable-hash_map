@@ -1,5 +1,5 @@
-var isNull = require("is_null"),
-    isNullOrUndefined = require("is_null_or_undefined"),
+var isNull = require("@nathanfaucett/is_null"),
+    isNullOrUndefined = require("@nathanfaucett/is_null_or_undefined"),
     consts = require("./consts"),
     mask = require("./mask"),
     cloneAndSet = require("./cloneAndSet"),

@@ -1,6 +1,6 @@
-var Benchmark = require("@nathanfaucett/benchmark"),
-    mori = require("@nathanfaucett/mori"),
-    Immutable = require("@nathanfaucett/immutable"),
+var Benchmark = require("benchmark"),
+    mori = require("mori"),
+    Immutable = require("immutable"),
     ImmutableMap = require("..");
 
 
@@ -17,12 +17,6 @@ suite.add("Immutable", function() {
 
 suite.add("mori hash_map", function() {
     mori.hashMap(0, 1, 2, 3);
-});
-
-suite.add("native map", function() {
-    var a = new Map();
-    a.set(0, 1);
-    a.set(2, 3);
 });
 
 suite.on("cycle", function(event) {

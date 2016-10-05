@@ -434,13 +434,12 @@ HashMapPrototype.toArray = function() {
 
 HashMapPrototype.toObject = function() {
     var it = this.iterator(),
-        next = it.next(),
-        results = {};
+        results = {},
+        step;
 
-    while (next.done === false) {
-        nextValue = next.value;
+    while ((step = it.next()).done === false) {
+        nextValue = step.value;
         results[nextValue[0]] = nextValue[1];
-        next = it.next();
     }
 
     return results;

@@ -72,6 +72,18 @@ tape("HashMap remove(key : Any) should return new HashMap with the removed key",
     assert.end();
 });
 
+tape("HashMap toObject(key : Any) should return native javascript object", function(assert) {
+    var map = new HashMap(0, 1, 2, 3),
+        object = map.toObject();
+
+    assert.deepEqual(object, {
+        "0": 1,
+        "2": 3
+    });
+
+    assert.end();
+});
+
 tape("HashMap static equal(a : HashMap, b : HashMap) should return a deep equals of hashMap a and b", function(assert) {
     assert.equal(HashMap.equal(new HashMap(0, 1, 2, 3), new HashMap(0, 1, 2, 3)), true);
     assert.equal(HashMap.equal(new HashMap(0, 1, 2, 3), new HashMap(0, 0, 2, 2)), false);

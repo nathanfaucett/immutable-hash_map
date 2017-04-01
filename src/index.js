@@ -34,8 +34,8 @@ function HashMap(value) {
         throw new Error("HashMap() must be called with new");
     }
 
-    this.__size = 0;
-    this.__root = null;
+    this._size = 0;
+    this._root = null;
 
     if (value !== INTERNAL_CREATE) {
         return HashMap_createHashMap(this, value, arguments);
@@ -87,8 +87,8 @@ function HashMap_fromObject(_this, object) {
     }
 
     if (size !== 0) {
-        _this.__size = size;
-        _this.__root = newRoot;
+        _this._size = size;
+        _this._root = newRoot;
         return freeze(_this);
     } else {
         return EMPTY_MAP;
@@ -119,8 +119,8 @@ function HashMap_fromArray(_this, array) {
     }
 
     if (size !== 0) {
-        _this.__root = root;
-        _this.__size = size;
+        _this._root = root;
+        _this._size = size;
         return freeze(_this);
     } else {
         return EMPTY_MAP;
@@ -133,6 +133,10 @@ HashMap.fromArray = function(array) {
     } else {
         return EMPTY_MAP;
     }
+};
+
+HashMap.fromObject = function(object) {
+    return HashMap_fromObject(new HashMap(INTERNAL_CREATE), object);
 };
 
 HashMap.of = function() {
@@ -151,7 +155,7 @@ defineProperty(HashMapPrototype, IS_MAP, {
 });
 
 HashMapPrototype.size = function() {
-    return this.__size;
+    return this._size;
 };
 
 if (defineProperty.hasGettersSetters) {
@@ -163,22 +167,22 @@ if (defineProperty.hasGettersSetters) {
 HashMapPrototype.count = HashMapPrototype.size;
 
 HashMapPrototype.isEmpty = function() {
-    return this.__size === 0;
+    return this._size === 0;
 };
 
 HashMapPrototype.has = function(key) {
-    var root = this.__root;
+    var root = this._root;
     return isNull(root) ? false : root.get(0, hashCode(key), key, NOT_SET) !== NOT_SET;
 };
 
 HashMapPrototype.get = function(key, notSetValue) {
-    var root = this.__root;
+    var root = this._root;
     return isNull(root) ? notSetValue : root.get(0, hashCode(key), key);
 };
 
 HashMapPrototype.set = function(key, value) {
-    var root = this.__root,
-        size = this.__size,
+    var root = this._root,
+        size = this._size,
         addedLeaf = new Box(null),
         newRoot = (isNull(root) ? BitmapIndexedNode.EMPTY : root).set(0, hashCode(key), key, value, addedLeaf),
         map;
@@ -187,15 +191,15 @@ HashMapPrototype.set = function(key, value) {
         return this;
     } else {
         map = new HashMap(INTERNAL_CREATE);
-        map.__size = isNull(addedLeaf.value) ? size : size + 1;
-        map.__root = newRoot;
+        map._size = isNull(addedLeaf.value) ? size : size + 1;
+        map._root = newRoot;
         return freeze(map);
     }
 };
 
 HashMapPrototype.remove = function(key) {
-    var root = this.__root,
-        size = this.__size,
+    var root = this._root,
+        size = this._size,
         newRoot;
 
     if (isNull(root)) {
@@ -209,8 +213,8 @@ HashMapPrototype.remove = function(key) {
             return this;
         } else {
             map = new HashMap(INTERNAL_CREATE);
-            map.__size = size - 1;
-            map.__root = newRoot;
+            map._size = size - 1;
+            map._root = newRoot;
             return freeze(map);
         }
     }
@@ -225,7 +229,7 @@ function next() {
 }
 
 HashMapPrototype.iterator = function(reverse) {
-    var root = this.__root;
+    var root = this._root;
 
     if (isNull(root)) {
         return new Iterator(hasNext, next);
@@ -327,7 +331,7 @@ HashMapPrototype.eachRight = HashMapPrototype.forEachRight;
 
 function HashMap_map(_this, it, callback) {
     var next = it.next(),
-        results = new Array(_this.__size * 2),
+        results = new Array(_this._size * 2),
         index = 0,
         nextValue, key;
 
@@ -419,7 +423,7 @@ HashMapPrototype.some = function(callback, thisArg) {
 HashMapPrototype.toArray = function() {
     var it = this.iterator(),
         next = it.next(),
-        results = new Array(this.__size * 2),
+        results = new Array(this._size * 2),
         index = 0;
 
     while (next.done === false) {
@@ -444,6 +448,9 @@ HashMapPrototype.toObject = function() {
 
     return results;
 };
+
+HashMap.fromJSON = HashMap.fromObject;
+HashMapPrototype.toJSON = HashMapPrototype.toObject;
 
 HashMapPrototype.join = function(separator, keyValueSeparator) {
     var it = this.iterator(),
@@ -497,7 +504,7 @@ function HashMap_equal(ait, bit) {
 HashMap.equal = function(a, b) {
     if (a === b) {
         return true;
-    } else if (!a || !b || a.__size !== b.__size) {
+    } else if (!a || !b || a._size !== b._size) {
         return false;
     } else {
         return HashMap_equal(a.iterator(), b.iterator());

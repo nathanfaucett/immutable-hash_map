@@ -249,3 +249,29 @@ tape("HashMap toString() should return toString representation of HashMap", func
     assert.equal((new HashMap(0, 0, 1, 1)).toString(), "{0: 0, 1: 1}");
     assert.end();
 });
+
+tape("HashMap toJSON() should return json object", function(assert) {
+    var map = new HashMap(0, 1, 2, 3),
+        object = map.toJSON();
+
+    assert.deepEqual(object, {
+        "0": 1,
+        "2": 3
+    });
+
+    assert.end();
+});
+
+tape("HashMap fromJSON(json : Object) should create return json object", function(assert) {
+    var object = HashMap.fromJSON({
+        "0": 1,
+        "2": 3
+    });
+
+    assert.deepEqual(object.toObject(), {
+        "0": 1,
+        "2": 3
+    });
+
+    assert.end();
+});

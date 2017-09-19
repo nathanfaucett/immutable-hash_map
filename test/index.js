@@ -40,6 +40,23 @@ tape("HashMap get(key : Any) should return element where key equals passed key",
     assert.end();
 });
 
+tape("HashMap get(key : Any) should return element where key equals passed key", function(assert) {
+    var hashMap = new HashMap(),
+        size = 1024 * 8,
+        count = 0,
+        i, interval;
+
+    for (i = 0, il = size; i < il; i++) {
+        hashMap = hashMap.set(i, i);
+    }
+    for (i = 0, il = size; i < il; i++) {
+        count += hashMap.get(i);
+    }
+
+    assert.equal(count, 33550336);
+    assert.end();
+});
+
 tape("HashMap has(key : Any) should return if HashMap has an element where key equals passed key", function(assert) {
     var hashMap = new HashMap(0, 0, 1, 1);
 

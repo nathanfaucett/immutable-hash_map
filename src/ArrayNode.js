@@ -34,7 +34,7 @@ ArrayNodePrototype.get = function(shift, keyHash, key, notSetValue) {
     if (isNullOrUndefined(node)) {
         return notSetValue;
     } else {
-        return node.get(shift + SHIFT, hash, key, notSetValue);
+        return node.get(shift + SHIFT, keyHash, key, notSetValue);
     }
 };
 

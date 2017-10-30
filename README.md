@@ -1,14 +1,18 @@
-immutable HashMap
+Immutable HashMap
 =======
 
-immutable persistent hash map for the browser and node.js
+Immutable persistent hash map for the browser and node.js
 
-# Install
+# Install using npm
 ```bash
 $ npm install @nathanfaucett/immutable-hash_map --save
 ```
+# Install using yarn
+```bash
+$ yarn add @nathanfaucett/immutable-hash_map --save
+```
 
-# Usage
+# Example Usage
 ```javascript
 var ImmutableHashMap = require("@nathanfaucett/immutable-hash_map");
 
@@ -48,13 +52,13 @@ var a0 = a.set(2, 2),
     returns size of HashMap
 
 #### get(key: Any) -> Any
-    returns value at index
+    returns value at key
 
 #### has(key: Any) -> Boolean
     returns true if hash map contains key
 
 #### set(key: Any, value: Any) -> HashMap
-    returns new HashMap if value at key is different
+    returns new HashMap if value at key is not set or different
 
 #### remove(key: Any) -> HashMap
     returns new HashMap without the value at key
@@ -62,13 +66,10 @@ var a0 = a.set(2, 2),
 #### iterator([reverse = false: Boolean]) -> Iterator
     returns Iterator
 
-#### every, filter, forEach, forEachRight, map, reduce, reduceRight, some
-    common Array methods
-
-#### toArray() -> Array<Any>
+#### toArray() -> Array<[Any, Any]>
     returns HashMap elements in an Array
 
-#### toObject() -> Array<Any>
+#### toObject() -> Object<String, Any>
     returns HashMap elements in an Object, keys should be primitives or some key value pairs will be lost
 
 #### join([separator = " "]) -> String
@@ -79,3 +80,6 @@ var a0 = a.set(2, 2),
 
 #### equals(other: HashMap) -> Boolean
     compares this hash map to other hash map by values
+
+#### every, filter, forEach, forEachRight, map, reduce, reduceRight, some
+    some common methods

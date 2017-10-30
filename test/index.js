@@ -44,7 +44,7 @@ tape("HashMap get(key : Any) should return element where key equals passed key",
     var hashMap = new HashMap(),
         size = 1024 * 8,
         count = 0,
-        i, interval;
+        i;
 
     for (i = 0, il = size; i < il; i++) {
         hashMap = hashMap.set(i, i);

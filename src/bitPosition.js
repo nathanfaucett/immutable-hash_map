@@ -1,9 +1,9 @@
 var mask = require("./mask");
 
 
-module.exports = bitpos;
+module.exports = bitPosition;
 
 
-function bitpos(hashCode, shift) {
+function bitPosition(hashCode, shift) {
     return 1 << mask(hashCode, shift);
 }

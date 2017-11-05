@@ -1,5 +1,4 @@
-var isNull = require("@nathanfaucett/is_null"),
-    isNullOrUndefined = require("@nathanfaucett/is_null_or_undefined"),
+var isNullOrUndefined = require("@nathanfaucett/is_null_or_undefined"),
     consts = require("./consts"),
     mask = require("./mask"),
     cloneAndSet = require("./cloneAndSet"),
@@ -45,9 +44,7 @@ ArrayNodePrototype.set = function(shift, keyHash, key, value, addedLeaf) {
         node = array[index],
         newNode;
 
-    if (isNullOrUndefined(node)) {
-        return new ArrayNode(count + 1, cloneAndSet(array, index, BitmapIndexedNode.EMPTY.set(shift + SHIFT, keyHash, key, value, addedLeaf)));
-    } else {
+    if (node) {
         newNode = node.set(shift + SHIFT, keyHash, key, value, addedLeaf);
 
         if (newNode === node) {
@@ -55,6 +52,10 @@ ArrayNodePrototype.set = function(shift, keyHash, key, value, addedLeaf) {
         } else {
             return new ArrayNode(count, cloneAndSet(array, index, newNode));
         }
+    } else {
+        return new ArrayNode(count + 1, cloneAndSet(array, index,
+            BitmapIndexedNode.EMPTY.set(shift + SHIFT, keyHash, key, value, addedLeaf)
+        ));
     }
 };
 
@@ -64,9 +65,7 @@ ArrayNodePrototype.remove = function(shift, keyHash, key) {
         node = array[index],
         newNode, count;
 
-    if (isNullOrUndefined(node)) {
-        return this;
-    } else {
+    if (node) {
         newNode = node.remove(shift + SHIFT, keyHash, key);
 
         if (newNode === node) {
@@ -75,7 +74,7 @@ ArrayNodePrototype.remove = function(shift, keyHash, key) {
             array = this.array;
             count = this.count;
 
-            if (isNull(newNode)) {
+            if (newNode === null) {
                 if (count <= MAX_ARRAY_MAP_SIZE) {
                     return pack(array, index);
                 } else {
@@ -85,6 +84,8 @@ ArrayNodePrototype.remove = function(shift, keyHash, key) {
                 return new ArrayNode(count, cloneAndSet(array, index, newNode));
             }
         }
+    } else {
+        return this;
     }
 };
 
@@ -98,7 +99,7 @@ function ArrayNode_iterator(_this) {
         var node;
 
         while (true) {
-            if (!isNull(nestedIter)) {
+            if (nestedIter !== null) {
                 if (nestedIter.hasNext()) {
                     return true;
                 } else {
@@ -140,7 +141,7 @@ function ArrayNode_iteratorReverse(_this) {
         var node;
 
         while (true) {
-            if (!isNull(nestedIter)) {
+            if (nestedIter !== null) {
                 if (nestedIter.hasNext()) {
                     return true;
                 } else {
@@ -185,11 +186,14 @@ function pack(array, index) {
         j = 1,
         bitmap = 0,
         i = -1,
-        il = index - 1;
+        il = index - 1,
+        value;
 
     while (i++ < il) {
-        if (!isNull(array[i])) {
-            newArray[j] = array[i];
+        value = array[i];
+
+        if (value !== null) {
+            newArray[j] = value;
             bitmap |= 1 << i;
             j += 2;
         }
@@ -198,8 +202,10 @@ function pack(array, index) {
     i = index - 1;
     il = array.length - 1;
     while (i++ < il) {
-        if (!isNull(array[i])) {
-            newArray[j] = array[i];
+        value = array[i];
+
+        if (value !== null) {
+            newArray[j] = value;
             bitmap |= 1 << i;
             j += 2;
         }

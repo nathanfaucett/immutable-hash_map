@@ -17,9 +17,9 @@ $ yarn add @nathanfaucett/immutable-hash_map --save
 var ImmutableHashMap = require("@nathanfaucett/immutable-hash_map");
 
 
-var a = new ImmutableHashMap([0, 0, 1, 1]),
+var a = new ImmutableHashMap({0: 0, 1: 1}),
     b = new ImmutableHashMap(0, 0, 1, 1),
-    c = ImmutableHashMap.of([0, 0, 1, 1]),
+    c = ImmutableHashMap.of({0: 0, 1: 1}),
     d = ImmutableHashMap.of(0, 0, 1, 1);
 
 var a0 = a.set(2, 2),

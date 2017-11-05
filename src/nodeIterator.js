@@ -1,6 +1,4 @@
-var isNull = require("@nathanfaucett/is_null"),
-    isUndefined = require("@nathanfaucett/is_undefined"),
-    Iterator = require("./Iterator");
+var Iterator = require("./Iterator");
 
 
 var IteratorValue = Iterator.Value;
@@ -32,13 +30,13 @@ function iterator(_this) {
             valueOrNode = array[index + 1];
             index += 2;
 
-            if (!isUndefined(key)) {
+            if (key !== void(0)) {
                 nextEntry = [key, valueOrNode];
                 return true;
-            } else if (!isUndefined(valueOrNode)) {
+            } else if (valueOrNode !== void(0)) {
                 iter = valueOrNode.iterator();
 
-                if (!isNull(iter) && iter.hasNext()) {
+                if (iter !== null && iter.hasNext()) {
                     nextIter = iter;
                     return true;
                 }
@@ -49,7 +47,7 @@ function iterator(_this) {
     }
 
     function hasNext() {
-        if (!isNull(nextEntry) || !isNull(nextIter)) {
+        if (nextEntry !== null || nextIter !== null) {
             return true;
         } else {
             return advance();
@@ -59,10 +57,10 @@ function iterator(_this) {
     function next() {
         var entry = nextEntry;
 
-        if (!isNull(entry)) {
+        if (entry !== null) {
             nextEntry = null;
             return new IteratorValue(entry, false);
-        } else if (!isNull(nextIter)) {
+        } else if (nextIter !== null) {
             entry = nextIter.next();
 
             if (!nextIter.hasNext()) {
@@ -95,13 +93,13 @@ function iteratorReverse(_this) {
             valueOrNode = array[index];
             index -= 2;
 
-            if (!isUndefined(key)) {
+            if (key !== void(0)) {
                 nextEntry = [key, valueOrNode];
                 return true;
-            } else if (!isUndefined(valueOrNode)) {
+            } else if (valueOrNode !== void(0)) {
                 iter = valueOrNode.iterator();
 
-                if (!isNull(iter) && iter.hasNext()) {
+                if (iter !== null && iter.hasNext()) {
                     nextIter = iter;
                     return true;
                 }
@@ -112,7 +110,7 @@ function iteratorReverse(_this) {
     }
 
     function hasNext() {
-        if (!isNull(nextEntry) || !isNull(nextIter)) {
+        if (nextEntry !== null || nextIter !== null) {
             return true;
         } else {
             return advance();
@@ -122,10 +120,10 @@ function iteratorReverse(_this) {
     function next() {
         var entry = nextEntry;
 
-        if (!isNull(entry)) {
+        if (entry !== null) {
             nextEntry = null;
             return new IteratorValue(entry, false);
-        } else if (!isNull(nextIter)) {
+        } else if (nextIter !== null) {
             entry = nextIter.next();
 
             if (!nextIter.hasNext()) {

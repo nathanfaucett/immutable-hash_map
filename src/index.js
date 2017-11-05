@@ -1,7 +1,5 @@
 var has = require("@nathanfaucett/has"),
     freeze = require("@nathanfaucett/freeze"),
-    isNull = require("@nathanfaucett/is_null"),
-    isUndefined = require("@nathanfaucett/is_undefined"),
     isObject = require("@nathanfaucett/is_object"),
     defineProperty = require("@nathanfaucett/define_property"),
     isEqual = require("@nathanfaucett/is_equal"),
@@ -9,7 +7,6 @@ var has = require("@nathanfaucett/has"),
     isArrayLike = require("@nathanfaucett/is_array_like"),
     fastBindThis = require("@nathanfaucett/fast_bind_this"),
     Box = require("./Box"),
-    Iterator = require("./Iterator"),
     BitmapIndexedNode = require("./BitmapIndexedNode");
 
 
@@ -21,8 +18,6 @@ var INTERNAL_CREATE = {},
     NOT_SET = {},
     EMPTY_MAP = freeze(new HashMap(INTERNAL_CREATE)),
 
-    IteratorValue = Iterator.Value,
-
     HashMapPrototype;
 
 
@@ -30,12 +25,8 @@ module.exports = HashMap;
 
 
 function HashMap(value) {
-    if (!(this instanceof HashMap)) {
-        throw new Error("HashMap() must be called with new");
-    }
-
     this._size = 0;
-    this._root = null;
+    this._root = BitmapIndexedNode.EMPTY;
 
     if (value !== INTERNAL_CREATE) {
         return HashMap_createHashMap(this, value, arguments);
@@ -68,19 +59,21 @@ function HashMap_createHashMap(_this, value, args) {
 function HashMap_fromObject(_this, object) {
     var size = 0,
         root = BitmapIndexedNode.EMPTY,
-        key, value, newRoot, addedLeaf;
+        addedLeaf = new Box(null),
+        key, value, newRoot;
 
     for (key in object) {
         if (has(object, key)) {
             value = object[key];
 
-            addedLeaf = new Box(null);
+            addedLeaf.value = null;
             newRoot = root.set(0, hashCode(key), key, value, addedLeaf);
 
             if (newRoot !== root) {
                 root = newRoot;
-                if (!isNull(addedLeaf.value)) {
-                    size += 1;
+
+                if (addedLeaf.value !== null) {
+                    size++;
                 }
             }
         }
@@ -100,17 +93,20 @@ function HashMap_fromArray(_this, array) {
         il = array.length,
         root = BitmapIndexedNode.EMPTY,
         size = 0,
-        newRoot, key, value, addedLeaf;
+        addedLeaf = new Box(null),
+        newRoot, key, value;
 
     while (i < il) {
         key = array[i];
         value = array[i + 1];
-        addedLeaf = new Box(null);
 
+        addedLeaf.value = null;
         newRoot = root.set(0, hashCode(key), key, value, addedLeaf);
+
         if (newRoot !== root) {
             root = newRoot;
-            if (!isNull(addedLeaf.value)) {
+
+            if (addedLeaf.value !== null) {
                 size += 1;
             }
         }
@@ -171,27 +167,25 @@ HashMapPrototype.isEmpty = function() {
 };
 
 HashMapPrototype.has = function(key) {
-    var root = this._root;
-    return isNull(root) ? false : root.get(0, hashCode(key), key, NOT_SET) !== NOT_SET;
+    return this._root.get(0, hashCode(key), key, NOT_SET) !== NOT_SET;
 };
 
 HashMapPrototype.get = function(key, notSetValue) {
-    var root = this._root;
-    return isNull(root) ? notSetValue : root.get(0, hashCode(key), key);
+    return this._root.get(0, hashCode(key), key, notSetValue);
 };
 
 HashMapPrototype.set = function(key, value) {
     var root = this._root,
         size = this._size,
         addedLeaf = new Box(null),
-        newRoot = (isNull(root) ? BitmapIndexedNode.EMPTY : root).set(0, hashCode(key), key, value, addedLeaf),
+        newRoot = root.set(0, hashCode(key), key, value, addedLeaf),
         map;
 
     if (newRoot === root) {
         return this;
     } else {
         map = new HashMap(INTERNAL_CREATE);
-        map._size = isNull(addedLeaf.value) ? size : size + 1;
+        map._size = addedLeaf.value === null ? size : size + 1;
         map._root = newRoot;
         return freeze(map);
     }
@@ -202,7 +196,7 @@ HashMapPrototype.remove = function(key) {
         size = this._size,
         newRoot;
 
-    if (isNull(root)) {
+    if (root === null) {
         return this;
     } else if (size === 1) {
         return EMPTY_MAP;
@@ -220,22 +214,8 @@ HashMapPrototype.remove = function(key) {
     }
 };
 
-function hasNext() {
-    return false;
-}
-
-function next() {
-    return new IteratorValue(undefined, true);
-}
-
 HashMapPrototype.iterator = function(reverse) {
-    var root = this._root;
-
-    if (isNull(root)) {
-        return new Iterator(hasNext, next);
-    } else {
-        return root.iterator(reverse);
-    }
+    return this._root.iterator(reverse);
 };
 
 if (ITERATOR_SYMBOL) {
@@ -258,7 +238,7 @@ function HashMap_every(_this, it, callback) {
 }
 
 HashMapPrototype.every = function(callback, thisArg) {
-    return HashMap_every(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+    return HashMap_every(this, this.iterator(), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
 function HashMap_filter(_this, it, callback) {
@@ -284,7 +264,7 @@ function HashMap_filter(_this, it, callback) {
 }
 
 HashMapPrototype.filter = function(callback, thisArg) {
-    return HashMap_filter(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+    return HashMap_filter(this, this.iterator(), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
 function HashMap_forEach(_this, it, callback) {
@@ -303,7 +283,7 @@ function HashMap_forEach(_this, it, callback) {
 }
 
 HashMapPrototype.forEach = function(callback, thisArg) {
-    return HashMap_forEach(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+    return HashMap_forEach(this, this.iterator(), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
 HashMapPrototype.each = HashMapPrototype.forEach;
@@ -324,7 +304,7 @@ function HashMap_forEachRight(_this, it, callback) {
 }
 
 HashMapPrototype.forEachRight = function(callback, thisArg) {
-    return HashMap_forEachRight(this, this.iterator(true), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+    return HashMap_forEachRight(this, this.iterator(true), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
 HashMapPrototype.eachRight = HashMapPrototype.forEachRight;
@@ -347,7 +327,7 @@ function HashMap_map(_this, it, callback) {
 }
 
 HashMapPrototype.map = function(callback, thisArg) {
-    return HashMap_map(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+    return HashMap_map(this, this.iterator(), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
 function HashMap_reduce(_this, it, callback, initialValue) {
@@ -355,7 +335,7 @@ function HashMap_reduce(_this, it, callback, initialValue) {
         value = initialValue,
         nextValue, key;
 
-    if (isUndefined(value)) {
+    if (value === void(0)) {
         nextValue = next.value;
         key = nextValue[0];
         value = nextValue[1];
@@ -372,7 +352,7 @@ function HashMap_reduce(_this, it, callback, initialValue) {
 }
 
 HashMapPrototype.reduce = function(callback, initialValue, thisArg) {
-    return HashMap_reduce(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
+    return HashMap_reduce(this, this.iterator(), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
 };
 
 function HashMap_reduceRight(_this, it, callback, initialValue) {
@@ -380,7 +360,7 @@ function HashMap_reduceRight(_this, it, callback, initialValue) {
         value = initialValue,
         nextValue, key;
 
-    if (isUndefined(value)) {
+    if (value === void(0)) {
         nextValue = next.value;
         key = nextValue[0];
         value = nextValue[1];
@@ -397,7 +377,7 @@ function HashMap_reduceRight(_this, it, callback, initialValue) {
 }
 
 HashMapPrototype.reduceRight = function(callback, initialValue, thisArg) {
-    return HashMap_reduceRight(this, this.iterator(true), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
+    return HashMap_reduceRight(this, this.iterator(true), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 4), initialValue);
 };
 
 function HashMap_some(_this, it, callback) {
@@ -417,7 +397,7 @@ function HashMap_some(_this, it, callback) {
 }
 
 HashMapPrototype.some = function(callback, thisArg) {
-    return HashMap_some(this, this.iterator(), isUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 3));
+    return HashMap_some(this, this.iterator(), thisArg === void(0) ? callback : fastBindThis(callback, thisArg, 3));
 };
 
 HashMapPrototype.toArray = function() {

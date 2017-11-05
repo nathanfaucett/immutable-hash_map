@@ -263,7 +263,10 @@ tape("HashMap join([separator = \", \", [keyValueSeparator = \": \"]]) should jo
 });
 
 tape("HashMap toString() should return toString representation of HashMap", function(assert) {
-    assert.equal((new HashMap(0, 0, 1, 1)).toString(), "{0: 0, 1: 1}");
+    assert.equal((new HashMap({
+        0: 0,
+        1: 1
+    })).toString(), "{0: 0, 1: 1}");
     assert.end();
 });
 

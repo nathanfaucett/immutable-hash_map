@@ -1,5 +1,5 @@
 var isEqual = require("@nathanfaucett/is_equal"),
-    bitpos = require("./bitpos"),
+    bitPosition = require("./bitPosition"),
     arrayCopy = require("@nathanfaucett/array_copy"),
     cloneAndSet = require("./cloneAndSet"),
     removePair = require("./removePair"),
@@ -42,12 +42,12 @@ HashCollisionNodePrototype.get = function(shift, keyHash, key, notSetValue) {
 };
 
 HashCollisionNodePrototype.set = function(shift, keyHash, key, value, addedLeaf) {
-    var index, count, array, newArray;
+    var index, count, indexOffset, array, newArray;
 
     if (keyHash === this.keyHash) {
         array = this.array;
-        count = this.count,
-            index = getIndex(array, key);
+        count = this.count;
+        index = getIndex(array, key);
 
         if (index !== -1) {
             if (array[index + 1] === value) {
@@ -56,15 +56,16 @@ HashCollisionNodePrototype.set = function(shift, keyHash, key, value, addedLeaf)
                 return new HashCollisionNode(keyHash, count, cloneAndSet(array, index + 1, value));
             }
         } else {
+            indexOffset = 2 * count;
             newArray = new Array(2 * (count + 1));
-            baseArrayCopy(array, 0, newArray, 0, 2 * count);
-            newArray[2 * count] = key;
-            newArray[2 * count + 1] = value;
+            baseArrayCopy(array, 0, newArray, 0, indexOffset);
+            newArray[indexOffset] = key;
+            newArray[indexOffset + 1] = value;
             addedLeaf.value = addedLeaf;
             return new HashCollisionNode(keyHash, count + 1, newArray);
         }
     } else {
-        return new BitmapIndexedNode(bitpos(this.keyHash, shift), [null, this]).set(shift, keyHash, key, value, addedLeaf);
+        return new BitmapIndexedNode(bitPosition(this.keyHash, shift), [null, this]).set(shift, keyHash, key, value, addedLeaf);
     }
 };
 
